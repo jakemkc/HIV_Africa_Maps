@@ -1,24 +1,5 @@
 ## VariableSets for HIV mapping
 
-## Note added on 032420
-#' this is to get state admin level 1 map, I don't need GPS
-#' and I found from Kajal's predicted HIV, she gets Senegal, asking her the flattened data
-#' So I have 3 more countries compared to that prevR need GPS map
-
-
-## Note
-#' 1st is Folder country name
-#' 2nd is path name (survey year)
-#' 3rd is the GPS file name
-#' 4th is the country name in the boundary file (if using PrevR for density map, run "create.boundary()")
-#' 5th is predicted HIV partial file name (for state map)
-#' 
-#' Burkina_faso, Burundi, and Chad are added by Jake on top of Jessica's data folder
-#' Then added a few more after HIV meeting on 100819: cameroon, mozambique, tanzania, uganda. 
-#' - "Congo" and "Sao tome and Princpe" x2 have HIV and *.encoded.rds, but NO GPS files
-#' - These are 2 different counties. "Congo" = Congo republic = The republic of Congo, NOT = "Congo_Democratic_Republic
-
-## Total 26 countries
 
 Angola <- c("Angola", "Standard_DHS_2015-16", "AOGE71FL", "Angola", "Angola_2015-16")
 Burkina_Faso <- c("Burkina_Faso", "Standard_DHS_2010", "BFGE61FL", "Burkina Faso", "Burkina_Faso_2010")
@@ -26,12 +7,12 @@ Burundi <- c("Burundi", "Standard_DHS_2010", "BUGE61FL", "Burundi", "Burundi_201
 Cameroon <- c("Cameroon", "Standard_DHS_2004", "CMGE42FL", "Cameroon", "Cameroon_2004")
 Chad <- c("Chad", "Standard_DHS_2014-15", "TDGE71FL", "Chad", "Chad_2014-15")
 
-# new for state map
+
 Congo <-c("Congo", "Standard_AIS_2009", "NIL", "Congo", "Congo_2009") # new
 
 Congo_Democratic_Republic <- c("Congo_Democratic_Republic", "Standard_DHS_2013-14", "CDGE61FL", "Democratic Republic of the Congo", "Congo_Democratic_Republic_2013-14")
 
-# speical R cant handle that ' name
+
 Cote_dIvoire <- c("Cote_d'Ivoire", "Standard_DHS_2011-12", "CIGE61FL", "Cote d'Ivoire", "Cote_d'Ivoire_2011-12")
 
 Ethiopia <- c("Ethiopia", "Standard_DHS_2011", "ETGE61FL", "Ethiopia", "Ethiopia_2011")
@@ -47,7 +28,7 @@ Mozambique <- c("Mozambique", "Standard_AIS_2009", "MZGE52FL", "Mozambique", "Mo
 Namibia <- c("Namibia", "Standard_DHS_2013", "NMGE61FL", "Namibia", "Namibia_2013")
 Rwanda <- c("Rwanda", "Standard_DHS_2014-15", "RWGE72FL", "Rwanda", "Rwanda_2014-15")
 
-# new for state map
+
 Sao_Tome_and_Principe <- c("Sao_Tome_and_Principe", "Standard_DHS_2008-09", "NIL", "Sao Tome and Principe", "Sao_Tome_and_Principe_2008-09")
 Senegal <- c("Senegal", "Standard_DHS_2010-11", "NIL", "Senegal", "Senegal_2010-11")
 
