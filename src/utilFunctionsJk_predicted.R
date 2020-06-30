@@ -271,7 +271,6 @@ AfricaMap <- function(countryList, plotObj, filterMapAnnot, yMapAnnot) {
     plotInput <- plotObj[[var]]
     
     p <- p + geom_polygon(data = plotInput, aes(x = long, y = lat, group = group, fill = pHIV))
-    # p <- p + geom_path(data = plotInput, aes(x = long, y = lat, fill = NULL, group = group), size = 0.35, color = "black")
     p <- p + geom_path(data = plotInput, aes(x = long, y = lat, fill = NULL, group = group), size = 0.22, color = "black") # at home LCD default
     print(var)
   }
