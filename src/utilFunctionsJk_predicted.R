@@ -6,34 +6,11 @@
 
 perCountryMap <- function(country, filterVar, outcomeY, outcomeYW) {
   
-  # ## Input
-  # country = "Angola" #names of countryVar
-  # country = "Zambia" #names of countryVar
-  # country = "Burkina_Faso" #names of countryVar
-  # country = "Kenya" #names of countryVar
-  # # HIV set
-  # filterVar = 0 # "all", 0, 1; (0 = female, 1 = male)
-  # outcomeY = "hiv03"
-  # outcomeY = "hivPredProb"
-  # outcomeY = "v012"
-  # outcomeYW = "hiv05"
-  # # predictor female set
-  # filterVar = 0 # "all", 0, 1; (0 = female, 1 = male)
-  # outcomeY = "v535_0"
-  # outcomeYW = "v005"
-  # predictor male set
-  # filterVar = 1 # "all", 0, 1; (0 = female, 1 = male)
-  # outcomeY = "hv116_0"
-  # outcomeYW = "mv005"
 
-  
   ## a Read data ----
   
   inCountry <- countryVars[[country]][1]
   inYear <- countryVars[[country]][2]
-  # inGPS <- countryVars[[country]][3]
-  # bondName <- countryVars[[country]][4]
-  # inGPSdata <- sprintf("%s.dbf", inGPS)
   inPredHiv <- countryVars[[country]][5]
   
   
@@ -78,15 +55,14 @@ perCountryMap <- function(country, filterVar, outcomeY, outcomeYW) {
   
   # CREATE v024 categorical
   dhsDataFlat <- dhsDataFlat %>% select(starts_with("v024"), ID) %>% 
-    # setNames(c(as.character(1:v024Length), "ID")) %>% 
     setNames(str_replace(names(.), "^v024_", "")) %>%
     gather("v024", "value", -ID) %>% 
     filter(value == 1) %>% 
-    left_join(dhsDataFlat %>% select(ID, !!sym(outcomeY), !!sym(outcomeYW), hv104_1), ., by = "ID") # "v024_" NA still as "v024" NA; v012 = age
+    left_join(dhsDataFlat %>% select(ID, !!sym(outcomeY), !!sym(outcomeYW), hv104_1), ., by = "ID")
   
   # Filter sex
   if (filterVar != "all") {
-    dhsDataFlat <- dhsDataFlat %>% filter(hv104_1 == filterVar) # drop case not 0 , 1; it drops NA too; No need to care NSE in filterVar here (it reads 0 or "0")
+    dhsDataFlat <- dhsDataFlat %>% filter(hv104_1 == filterVar) 
   }
   
   
@@ -96,9 +72,8 @@ perCountryMap <- function(country, filterVar, outcomeY, outcomeYW) {
   # create hiv summary statistics by state
   mapSmy <- dhsDataFlat %>% group_by(v024) %>% 
     summarise(pHIV = weighted.mean(!!sym(outcomeY), !!sym(outcomeYW)/1000000, na.rm = TRUE) 
-    ) # it created an NA row, OK
+    )
   
-  # If filter == "all", Liberia, Sierra, Burkina, and Mali wont be accurate as they have new v024 columns
   if (inCountry == "Malawi") {
     mapSmy$v024 <- c("1", "2", "4", NA) # Malawi all dex
   }
@@ -159,34 +134,12 @@ perCountryMap <- function(country, filterVar, outcomeY, outcomeYW) {
 
 perCountryObj <- function(country, filterVar, outcomeY, outcomeYW) {
   
-  # ## Input
-  # country = "Angola" #names of countryVar
-  # country = "Zambia" #names of countryVar
-  # country = "Burkina_Faso" #names of countryVar
-  # country = "Kenya" #names of countryVar
-  # # HIV set
-  # filterVar = 0 # "all", 0, 1; (0 = female, 1 = male)
-  # outcomeY = "hiv03"
-  # outcomeY = "hivPredProb"
-  # outcomeY = "v012"
-  # outcomeYW = "hiv05"
-  # # predictor female set
-  # filterVar = 0 # "all", 0, 1; (0 = female, 1 = male)
-  # outcomeY = "v535_0"
-  # outcomeYW = "v005"
-  # predictor male set
-  # filterVar = 1 # "all", 0, 1; (0 = female, 1 = male)
-  # outcomeY = "hv116_0"
-  # outcomeYW = "mv005"
   
   
   ## a Read data ----
   
   inCountry <- countryVars[[country]][1]
   inYear <- countryVars[[country]][2]
-  # inGPS <- countryVars[[country]][3]
-  # bondName <- countryVars[[country]][4]
-  # inGPSdata <- sprintf("%s.dbf", inGPS)
   inPredHiv <- countryVars[[country]][5]
   
   dataPath <- file.path("data", "map", inCountry, inYear, "flattenedfile.encoded.rds")
@@ -203,25 +156,6 @@ perCountryObj <- function(country, filterVar, outcomeY, outcomeYW) {
   # # read country bounary
   # dhsBound <- create.boundary(bondName)
   
-  # remove labelled
-  # dhsDataFlat <- zap_labels(dhsDataFlat)
-  
-  ## **************************
-  ## Join predict HIV
-  # Load
-  
-  #` 062620 decided to have Kajal get Senegal even low HIV prevalence, so chirag and I both using 29 countries
-  # # Senegal has no female
-  # if (inCountry == "Senegal") {
-  #   m <- readr::read_csv(mPredHivPath)
-  #   mf <- select(m, "ID", "hivPredProb")
-  # } else {
-  #   m <- readr::read_csv(mPredHivPath)
-  #   f <- readr::read_csv(fPredHivPath)
-  #   
-  #   # Combine
-  #   mf <- bind_rows(select(m, "ID", "hivPredProb"), select(f, "ID", "hivPredProb"))
-  # }
   
     m <- readr::read_csv(mPredHivPath)
     f <- readr::read_csv(fPredHivPath)
@@ -247,15 +181,14 @@ perCountryObj <- function(country, filterVar, outcomeY, outcomeYW) {
   
   # CREATE v024 categorical
   dhsDataFlat <- dhsDataFlat %>% select(starts_with("v024"), ID) %>% 
-    # setNames(c(as.character(1:v024Length), "ID")) %>%
     setNames(str_replace(names(.), "^v024_", "")) %>%
     gather("v024", "value", -ID) %>% 
     filter(value == 1) %>% 
-    left_join(dhsDataFlat %>% select(ID, !!sym(outcomeY), !!sym(outcomeYW), hv104_1), ., by = "ID") # "v024_" NA still as "v024" NA; v012 = age
+    left_join(dhsDataFlat %>% select(ID, !!sym(outcomeY), !!sym(outcomeYW), hv104_1), ., by = "ID")
   
   # Filter sex
   if (filterVar != "all") {
-    dhsDataFlat <- dhsDataFlat %>% filter(hv104_1 == filterVar) # drop case not 0 , 1; it drops NA too; No need to care NSE in filterVar here (it reads 0 or "0")
+    dhsDataFlat <- dhsDataFlat %>% filter(hv104_1 == filterVar)
   }
   
   
@@ -268,7 +201,6 @@ perCountryObj <- function(country, filterVar, outcomeY, outcomeYW) {
     ) # it created an NA row, OK
   
   
-  # If filter == "all", Liberia, Sierra, Burkina, and Mali wont be accurate as they have new v024 columns
   if (inCountry == "Malawi") {
     mapSmy$v024 <- c("1", "2", "4", NA) # Malawi all dex
   }
@@ -319,14 +251,11 @@ perCountryObj <- function(country, filterVar, outcomeY, outcomeYW) {
 ### C. Plot Africa map -------------
 
 AfricaMap <- function(countryList, plotObj, filterMapAnnot, yMapAnnot) {
-  ## Map annotation. Name on Map ONLY
-  # INPUT
-  # yMapAnnot = "hiv03"
-  # filterMapAnnot = "all"
+
   
   ## GGPLOT 1 Africa map
   require(maptools)
-  africaMapImport <- rgdal::readOGR("./data/Africa_SHP/Africa.shp") # http://www.maplibrary.org/library/stacks/Africa/index.htm
+  africaMapImport <- rgdal::readOGR("./data/Africa_SHP/Africa.shp") 
   
   # sp class to dataframe
   africaMap <- fortify(africaMapImport) 
@@ -348,14 +277,9 @@ AfricaMap <- function(countryList, plotObj, filterMapAnnot, yMapAnnot) {
   }
   
   p <- p + coord_quickmap() # ref: https://ggplot2.tidyverse.org/reference/coord_map.html
-  ## adaptive or fixed scale
-  # p <- p + scale_fill_gradientn(colours = prevR.colors.red(20), name = "Percentage")
-  # p <- p + scale_fill_gradientn(colours = prevR.colors.red(20), breaks = c(0, 0.1, 0.2, 0.3, 0.4), limits = c(0, 0.5), name = "Predicted \nprobability \nof HIV")
   p <- p + scale_fill_distiller(limits = c(0, 0.5), name = "Predicted \nprobability \nof HIV")
   p <- p + ggtitle(sprintf("%s, %s", filterMapAnnot, yMapAnnot))
   p <- p + xlab("Longitude") + ylab("Latitude")
-  # p <- p + theme_prevR_light() + # swtich if you don't want ggplot bg
-  # p <- p + theme_cowplot(12)
   return(p)
 }
 
