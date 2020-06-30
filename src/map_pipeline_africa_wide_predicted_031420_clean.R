@@ -52,9 +52,9 @@ countryVars <- mget(c("Angola", "Burkina_Faso", "Burundi", "Cameroon", "Chad", "
 
 # HIV, all subject
 # female
-plotObjHIV <- future_map(names(countryVars), perCountryObj, 0, "hivPredProb", "hiv05") %>% setNames(names(countryVars)) # only #25 zambia has the warning, but OK
+plotObjHIV <- future_map(names(countryVars), perCountryObj, 0, "hivPredProb", "hiv05") %>% setNames(names(countryVars)) 
 # male
-plotObjHIV <- future_map(names(countryVars), perCountryObj, 1, "hivPredProb", "hiv05") %>% setNames(names(countryVars)) # only #25 zambia has the warning, but OK
+plotObjHIV <- future_map(names(countryVars), perCountryObj, 1, "hivPredProb", "hiv05") %>% setNames(names(countryVars)) 
 
 
 ### ........ ---------------------------------------------------------------
